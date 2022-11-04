@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>806</width>
     <height>645</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>620</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -27,10 +33,16 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>100</y>
-      <width>801</width>
-      <height>501</height>
+      <y>120</y>
+      <width>800</width>
+      <height>500</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>800</width>
+      <height>500</height>
+     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(52, 52, 52);</string>
@@ -38,21 +50,27 @@
     <widget class="QWidget" name="action_window" native="true">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>20</y>
-       <width>371</width>
-       <height>441</height>
+       <x>400</x>
+       <y>100</y>
+       <width>370</width>
+       <height>370</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>370</width>
+       <height>370</height>
+      </size>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(145, 145, 145);
 border-radius: 10px;</string>
      </property>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="label_src">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>20</y>
+        <y>30</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -62,49 +80,32 @@ border-radius: 10px;</string>
 color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>Create Directory</string>
+       <string>Source Dir</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="dirName">
+     <widget class="QLineEdit" name="src_text_box">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>70</y>
-        <width>191</width>
+        <y>60</y>
+        <width>311</width>
         <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(255, 255, 255);
 color: rgb(0, 0, 0);
-border-radius:0px;</string>
+border-radius: 10px;</string>
       </property>
       <property name="text">
-       <string>Enter your directory name</string>
+       <string>Enter source directory</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QPushButton" name="startB">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>40</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 63 12pt &quot;Cascadia Code PL SemiBold&quot;;
-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Name</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="createB">
-      <property name="geometry">
-       <rect>
-        <x>230</x>
-        <y>70</y>
+        <y>310</y>
         <width>71</width>
         <height>31</height>
        </rect>
@@ -115,7 +116,7 @@ border-radius: 10px;
 </string>
       </property>
       <property name="text">
-       <string>Create</string>
+       <string>Start</string>
       </property>
       <property name="iconSize">
        <size>
@@ -127,24 +128,136 @@ border-radius: 10px;
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="label_dest">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>100</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 63 12pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Destination Dir</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="dest_text_box">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>130</y>
+        <width>311</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Enter destination directory</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_txt">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>180</y>
+        <width>70</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 63 9pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>txt</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_img">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>180</y>
+        <width>70</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 63 9pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>images</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_split">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>210</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 63 12pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Split ratio</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="split_text_box">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>240</y>
+        <width>311</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Enter split ratio in xx:xx format. e.g: 70:30, 90:10</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QTreeView" name="treeView">
      <property name="geometry">
       <rect>
-       <x>430</x>
-       <y>80</y>
-       <width>351</width>
-       <height>381</height>
+       <x>30</x>
+       <y>100</y>
+       <width>350</width>
+       <height>370</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>370</height>
+      </size>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
+      <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+</string>
      </property>
     </widget>
     <widget class="QPushButton" name="exp_back">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>30</x>
        <y>20</y>
        <width>50</width>
        <height>50</height>
@@ -168,20 +281,44 @@ border-radius: 10px;
       <bool>false</bool>
      </property>
     </widget>
+    <widget class="QLineEdit" name="root_dir">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>20</y>
+       <width>670</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+border-radius:10px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
-   <widget class="QWidget" name="widget" native="true">
+   <widget class="QWidget" name="widget_1" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>801</width>
-      <height>101</height>
+      <width>800</width>
+      <height>120</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>800</width>
+      <height>120</height>
+     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="title">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -194,7 +331,7 @@ border-radius: 10px;
       <string notr="true">font: 63 16pt &quot;Cascadia Code PL SemiBold&quot;;</string>
      </property>
      <property name="text">
-      <string>Explorer</string>
+      <string>Splitter</string>
      </property>
     </widget>
     <widget class="QPushButton" name="shelf">
@@ -234,7 +371,7 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(222, 222, 222);
+      <string notr="true">background-color:rgb(0, 255, 0);
 border-radius: 10px;
 </string>
      </property>
