@@ -79,8 +79,6 @@ class ShelfScreen3(QMainWindow):
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
 
-        print(file_path[-4:])
-
         if file_path[-4:] == ".jpg" or file_path[-4:] == ".png":
             self.display_labels(file_path)
         elif os.path.exists(file_path) and os.path.exists(file_path[-4:]+".txt"):
@@ -174,6 +172,13 @@ class ShelfScreen3(QMainWindow):
             if os.path.exists(file_path[:-4]+".txt"):
                 shutil.move(file_path[:-4]+".txt", dst)
 
+            image_qt = QImage("gui/images/archived-rubber-stamp.jpg")
+
+            image_qt = image_qt.scaled(self.picBox.width(), self.picBox.height(),
+                                       aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+                                       transformMode=QtCore.Qt.SmoothTransformation)  # To scale image for example and keep its Aspect Ration
+            self.picBox.setPixmap(QPixmap.fromImage(image_qt))
+
         print(f'Archived: {dst}')
 
 
@@ -229,9 +234,10 @@ class ShelfScreen3(QMainWindow):
             img = cv2.imread(filepath)
             dh, dw, _ = img.shape
 
-            if 640 < dw < 1080:
-                scale = 1
-            elif 1080 < dw < 2048:
+            scale = 1
+            # if 640 < dw < 1080:
+            #     scale = 1
+            if 1080 < dw < 2048:
                 scale = 2
             elif 2048 < dw:
                 scale = 3
