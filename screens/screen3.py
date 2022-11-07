@@ -62,14 +62,16 @@ class ShelfScreen3(QMainWindow):
         text, ok = QInputDialog.getText(self, 'Load Labels', 'Label filepath')
         if ok:
             colors = [(4, 67, 137), (252, 255, 75), (255, 173, 5), (124, 61, 196), (255, 60, 5)]
-            if os.path.exists(text):
+            if os.path.exists(text) and text[-4:] == '.txt':
                 file = open(text, 'r')
                 count = 0
                 for line in file.readlines():
                     line = line.replace("\n", "")
                     self.labels.update({count: (line, colors[count])})
                     count += 1
+                self.load_labels.setStyleSheet("background-color: rgb(170, 255, 0); border-radius: 10px;")
                 self.show_popup('Load Labels', 'Labels loaded', 'info')
+
             else:
                 self.show_popup('Load Labels', 'Label file does not exist', 'warning')
 
@@ -227,6 +229,13 @@ class ShelfScreen3(QMainWindow):
             img = cv2.imread(filepath)
             dh, dw, _ = img.shape
 
+            if 640 < dw < 1080:
+                scale = 1
+            elif 1080 < dw < 2048:
+                scale = 2
+            elif 2048 < dw:
+                scale = 3
+
             for line in lines:
                 print(line)
                 # Split string to float
@@ -251,12 +260,12 @@ class ShelfScreen3(QMainWindow):
                     if len(class_name) > 3:
                         for key, value in self.labels.items():
                             if class_name == value[0]:
-                                cv2.putText(img, self.labels[key][0], (l + 5, t + 20),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 1, self.labels[key][1], 3, cv2.LINE_AA, False)
+                                cv2.putText(img, self.labels[key][0], (l + 5, t + 20*scale),
+                                            cv2.FONT_HERSHEY_SIMPLEX, scale, self.labels[key][1], scale+2, cv2.LINE_AA, False)
                                 cv2.rectangle(img, (l, t), (r, b), self.labels[key][1], 3)
                                 break
                             else:
-                                cv2.putText(img, class_name, (l+5, t+20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3,
+                                cv2.putText(img, class_name, (l+5, t+20*scale), cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 255), scale+2,
                                         cv2.LINE_AA, False)
                                 cv2.rectangle(img, (l, t), (r, b), (0, 255, 0), 3)
                     else:
