@@ -24,9 +24,16 @@ def dir_parser(src, ext="txt"):
     :param ext: File extension
     :return: None
     '''
-    for filepath in glob(src+f"/*.{ext}"):
-        filename = os.path.basename(filepath)
-        print(filename)
+
+    for dir_obj in os.walk(src):
+        # filename = os.path.basename(filepath)
+        # print(filename)
+        root = dir_obj[0]
+        dirs = dir_obj[1]
+        files = [file for file in dir_obj[2] if not file.endswith(('.txt', '.tar'))]
+        print(root)
+        print(dirs)
+        print(files)
 
 
 def shuffler(src, dst):
@@ -69,7 +76,9 @@ def splitter(src, dst, ext="txt"):
 if __name__ == "__main__":
     src = r'C:\Users\ashwi\PycharmProjects\Datasets\Checkbox model\Checkbox Dataset\docs_with_checkboxes'
     dst = r'C:\Users\ashwi\Desktop\checkbox'
-    create_output_dirs(dst)
+    # create_output_dirs(dst)
 
-    splitter(src, dst, ext='txt')
+    # splitter(src, dst, ext='txt')
+
+    dir_parser(src)
 

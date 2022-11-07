@@ -1,5 +1,5 @@
 # Daxplore
-Daxplore is a utility library for creating datasets using python 
+Daxplore is a GUI Application for creating, cleaning and organizing datasets. 
 
 
 ## Installation

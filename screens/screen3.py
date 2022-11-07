@@ -20,12 +20,13 @@ class ShelfScreen3(QMainWindow):
             os.mkdir("archive")
 
         self.widget = None
-        self.labels = {}
-
-        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.treeView.customContextMenuRequested.connect(self.context_menu)
 
         self.path = os.getcwd().replace('\\', '/')
+        self.labels = {}
+        self.file_list = []
+        self.index = 0
+        self.kb_active = False
+
         self.root_dir.setText(self.path)
 
         icon1 = QtGui.QIcon('gui/icons/ghost-solid.png')
@@ -50,11 +51,13 @@ class ShelfScreen3(QMainWindow):
         self.archive_labels.clicked.connect(self.archive_file)
 
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.treeView.customContextMenuRequested.connect(self.context_menu)
+
+        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 
         self.treeView.clicked.connect(self.select_item)
         self.treeView.doubleClicked.connect(self.open_file)
         self.populate(self.path)
-
 
         self.exp_back.clicked.connect(self.goBack)
 
@@ -76,6 +79,8 @@ class ShelfScreen3(QMainWindow):
                 self.show_popup('Load Labels', 'Label file does not exist', 'warning')
 
     def select_item(self):
+        self.kb_active = False
+
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
 
@@ -85,13 +90,29 @@ class ShelfScreen3(QMainWindow):
             self.display_labels(file_path)
 
     def keyPressEvent(self, event):
+        self.kb_active = True
+        # TODO: Pop out archived filenames from self.file_path
         if event.key() == QtCore.Qt.Key_B:
-            self.goBack()
             print(" Pressed B")
+            self.index -= 1
+
+            if self.index < 0:
+                self.index = 0
+
+            dst = self.path + f"/{self.file_list[self.index]}"
+            self.display_labels(dst)
+            self.root_dir.setText(dst)
 
         elif event.key() == QtCore.Qt.Key_N:
             print(" Pressed N")
+            self.index += 1
 
+            if self.index > len(self.file_list):
+                self.index -= 1
+
+            dst = self.path + f"/{self.file_list[self.index]}"
+            self.display_labels(dst)
+            self.root_dir.setText(dst)
 
     def resizeEvent(self, resizeEvent):
         self.widget_1.resize(self.width(), 120)
@@ -119,6 +140,7 @@ class ShelfScreen3(QMainWindow):
         menu.exec_(cursor.pos())
 
     def open_file(self):
+        self.kb_active = False
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
         file_name = os.path.basename(file_path)
@@ -127,6 +149,7 @@ class ShelfScreen3(QMainWindow):
             self.path = file_path
             self.root_dir.setText(self.path)
             self.populate(file_path)
+            self.parse_files()
             diag = Properties(file_name, 'd')
 
         elif file_path[-4:] == ".jpg" or file_path[-4:] == ".png":
@@ -138,7 +161,8 @@ class ShelfScreen3(QMainWindow):
         elif os.path.exists(file_path) and os.path.exists(file_path[-4:]+".txt"):
             self.display_labels(file_path)
 
-        print(f'clicked: {file_path} {file_path[-4:]}')
+
+        print(f'clicked: {file_path}')
 
     def rename_file(self):
         index = self.treeView.currentIndex()
@@ -155,8 +179,11 @@ class ShelfScreen3(QMainWindow):
             print("Not a dir")
 
     def archive_file(self):
-        index = self.treeView.currentIndex()
-        file_path = self.model.filePath(index)
+        if self.kb_active:
+            file_path = self.root_dir.text()
+        else:
+            index = self.treeView.currentIndex()
+            file_path = self.model.filePath(index)
 
         if os.path.isdir(file_path):
             dst = f"archive/{os.path.basename(file_path)}"
@@ -171,6 +198,7 @@ class ShelfScreen3(QMainWindow):
             # Move labels if found
             if os.path.exists(file_path[:-4]+".txt"):
                 shutil.move(file_path[:-4]+".txt", dst)
+                # self.file_list.pop(self.index)
 
             image_qt = QImage("gui/images/archived-rubber-stamp.jpg")
 
@@ -180,7 +208,6 @@ class ShelfScreen3(QMainWindow):
             self.picBox.setPixmap(QPixmap.fromImage(image_qt))
 
         print(f'Archived: {dst}')
-
 
     def delete_file(self):
         index = self.treeView.currentIndex()
@@ -220,8 +247,6 @@ class ShelfScreen3(QMainWindow):
 
         # diag.setModal(True)
         diag.exec()
-
-
 
     def display_labels(self, filepath):
 
@@ -309,9 +334,8 @@ class ShelfScreen3(QMainWindow):
 
     def goBack(self):
         self.path = os.path.abspath(self.path + "/../").replace('\\', '/')
-        self.populate(self.path)
         self.root_dir.setText(self.path)
-        print(self.path)
+        self.populate(self.path)
 
     def populate(self, path):
         self.model = QtWidgets.QFileSystemModel()
@@ -325,6 +349,17 @@ class ShelfScreen3(QMainWindow):
 
     def gotoShelf2(self):
          self.widget.setCurrentIndex(1)
+
+    def parse_files(self):
+        self.index = 0
+        for dir_obj in os.walk(self.path):
+            # self.path = dir_obj[0]
+            # dirs = dir_obj[1]
+            self.file_list = [file for file in dir_obj[2] if not file.endswith(('.txt', '.tar'))]
+            # self.file_list = dir_obj[2]
+
+
+
 
 class Properties(QDialog):
     def __init__(self, fileName="Default", dir="d"):
