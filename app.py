@@ -1,6 +1,7 @@
 import sys
-from PyQt5 import QtWidgets
+
 from PyQt5.QtWidgets import QApplication
+from PyQt5 import QtWidgets, QtGui
 
 from screens.screen1 import MainScreen
 from screens.screen2 import ShelfScreen2
@@ -16,6 +17,8 @@ sh3 = ShelfScreen3()
 
 
 widget = QtWidgets.QStackedWidget()
+widget.setWindowIcon(QtGui.QIcon('gui/icons/ghost-solid.svg'))
+widget.setWindowTitle("Daxplorer")
 
 widget.addWidget(sh1)
 widget.addWidget(sh2)

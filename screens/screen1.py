@@ -1,6 +1,6 @@
-import math
 import os
 import shutil
+
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QMessageBox, QInputDialog, QSizePolicy
@@ -9,33 +9,31 @@ from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QMessag
 class MainScreen(QMainWindow):
     def __init__(self):
         super(MainScreen, self).__init__()
+        self.setWindowIcon(QtGui.QIcon(r'C:\Users\ashwi\PycharmProjects\daxplore\gui\icons\ghost-solid.png'))
+
         loadUi("gui/shelf_1.ui", self)
         self.widget = None
-
-        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.treeView.customContextMenuRequested.connect(self.context_menu)
 
         self.path = os.getcwd().replace('\\', '/')
         self.root_dir.setText(self.path)
 
-        icon1 = QtGui.QIcon('gui/icons/ghost-solid.png')
-        self.shelf.setIcon(icon1)
 
-        icon2 = QtGui.QIcon('gui/icons/hat-wizard-solid.svg')
-        self.shelf_2.setIcon(icon2)
-
-        icon3 = QtGui.QIcon('gui/icons/dungeon-solid.svg')
-        self.shelf_3.setIcon(icon3)
+        self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.png'))
+        self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
+        self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
 
         self.shelf_2.clicked.connect(self.gotoShelf2)
         self.shelf_3.clicked.connect(self.gotoShelf3)
 
-        try:
-            self.createB.clicked.connect(self.createDir)
-        except Exception as ex:
-            print(ex)
+        # self.treeView.doubleClicked.connect(self.open_file)
 
+        self.createB.clicked.connect(self.createDir)
         self.exp_back.clicked.connect(self.goBack)
+
+        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.treeView.customContextMenuRequested.connect(self.context_menu)
+        self.treeView.doubleClicked.connect(self.open_file)
+
         self.populate(self.path)
 
     def resizeEvent(self, resizeEvent):
@@ -49,7 +47,12 @@ class MainScreen(QMainWindow):
         menu = QtWidgets.QMenu()
         open = menu.addAction("Open")
         rename = menu.addAction("Rename")
+        menu.addSeparator()
         delete = menu.addAction("Delete")
+
+        open.setIcon(QtGui.QIcon('gui/icons/open.svg'))
+        rename.setIcon(QtGui.QIcon('gui/icons/rename.svg'))
+        delete.setIcon(QtGui.QIcon('gui/icons/trash-solid.svg'))
 
         open.triggered.connect(self.open_file)
         rename.triggered.connect(self.rename_file)
@@ -66,8 +69,6 @@ class MainScreen(QMainWindow):
             self.path = file_path
             self.root_dir.setText(self.path)
             self.populate(file_path)
-
-        print(f'clicked: {file_path}')
 
     def rename_file(self):
         index = self.treeView.currentIndex()
@@ -117,10 +118,8 @@ class MainScreen(QMainWindow):
 
     def goBack(self):
         self.path = os.path.abspath(self.path + "/../").replace('\\', '/')
-        # self.dirName.setText(self.path)
         self.populate(self.path)
         self.root_dir.setText(self.path)
-        print(self.path)
 
     def populate(self, path):
         self.model = QtWidgets.QFileSystemModel()

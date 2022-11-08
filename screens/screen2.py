@@ -28,20 +28,12 @@ class ShelfScreen2(QMainWindow):
 
         self.widget = None
 
-        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.treeView.customContextMenuRequested.connect(self.context_menu)
-
         self.path = os.getcwd().replace('\\', '/')
         self.root_dir.setText(self.path)
 
-        icon1 = QtGui.QIcon('gui/icons/ghost-solid.png')
-        self.shelf.setIcon(icon1)
-
-        icon2 = QtGui.QIcon('gui/icons/hat-wizard-solid.svg')
-        self.shelf_2.setIcon(icon2)
-
-        icon3 = QtGui.QIcon('gui/icons/dungeon-solid.svg')
-        self.shelf_3.setIcon(icon3)
+        self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.png'))
+        self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
+        self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
 
         self.shelf.clicked.connect(self.gotoShelf1)
         self.shelf_3.clicked.connect(self.gotoShelf3)
@@ -50,18 +42,17 @@ class ShelfScreen2(QMainWindow):
         self.treeView.clicked.connect(self.select_item)
         # self.treeView.doubleClicked.connect(self.open_file)
 
-        self.populate(self.path)
-
         self.checkBox_txt.setChecked(True)
-
         self.checkBox_txt.clicked.connect(self.toggleChkBx2)
         self.checkBox_img.clicked.connect(self.toggleChkBx1)
-
         self.exp_back.clicked.connect(self.goBack)
-        try:
-            self.startB.clicked.connect(self.startSplit)
-        except Exception as ex:
-            print(ex)
+        self.startB.clicked.connect(self.startSplit)
+
+        self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.treeView.customContextMenuRequested.connect(self.context_menu)
+        self.treeView.doubleClicked.connect(self.open_file)
+
+        self.populate(self.path)
 
     def select_item(self):
         index = self.treeView.currentIndex()
@@ -105,7 +96,12 @@ class ShelfScreen2(QMainWindow):
         menu = QtWidgets.QMenu()
         open = menu.addAction("Open")
         rename = menu.addAction("Rename")
+        menu.addSeparator()
         delete = menu.addAction("Delete")
+
+        open.setIcon(QtGui.QIcon('gui/icons/open.svg'))
+        rename.setIcon(QtGui.QIcon('gui/icons/rename.svg'))
+        delete.setIcon(QtGui.QIcon('gui/icons/trash-solid.svg'))
 
         open.triggered.connect(self.open_file)
         rename.triggered.connect(self.rename_file)
@@ -123,8 +119,6 @@ class ShelfScreen2(QMainWindow):
             self.root_dir.setText(self.path)
             self.src_text_box.setText(self.path)
             self.populate(file_path)
-
-        print(f'clicked: {file_path}')
 
     def rename_file(self):
         index = self.treeView.currentIndex()
@@ -182,7 +176,6 @@ class ShelfScreen2(QMainWindow):
         self.populate(self.path)
         self.root_dir.setText(self.path)
         self.src_text_box.setText(self.path)
-        print(self.path)
 
     def populate(self, path):
         self.model = QtWidgets.QFileSystemModel()

@@ -23,29 +23,19 @@ class ShelfScreen3(QMainWindow):
 
         self.path = os.getcwd().replace('\\', '/')
         self.labels = {}
-        self.file_list = []
+        self.file_list = [""]
         self.index = 0
         self.kb_active = False
 
         self.root_dir.setText(self.path)
 
-        icon1 = QtGui.QIcon('gui/icons/ghost-solid.png')
-        self.shelf.setIcon(icon1)
-
-        icon2 = QtGui.QIcon('gui/icons/hat-wizard-solid.svg')
-        self.shelf_2.setIcon(icon2)
-
-        icon3 = QtGui.QIcon('gui/icons/dungeon-solid.svg')
-        self.shelf_3.setIcon(icon3)
-
-        icon4 = QtGui.QIcon('gui/icons/file-solid.svg')
-        self.load_labels.setIcon(icon4)
-
-        icon5 = QtGui.QIcon('gui/icons/box-archive-solid.svg')
-        self.archive_labels.setIcon(icon5)
-
-        icon6 = QtGui.QIcon('gui/icons/keyboard-solid.svg')
-        self.keyboard_active.setIcon(icon6)
+        self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.svg'))
+        self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
+        self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
+        self.load_labels.setIcon(QtGui.QIcon('gui/icons/file-solid.svg'))
+        self.archive_labels.setIcon(QtGui.QIcon('gui/icons/box-archive-solid.svg'))
+        self.keyboard_active.setIcon(QtGui.QIcon('gui/icons/keyboard-solid.svg'))
+        self.goto_button.setIcon(QtGui.QIcon('gui/icons/goto.svg'))
 
         self.shelf.clicked.connect(self.gotoShelf1)
         self.shelf_2.clicked.connect(self.gotoShelf2)
@@ -53,6 +43,7 @@ class ShelfScreen3(QMainWindow):
         self.load_labels.clicked.connect(self.loadLabels)
         self.archive_labels.clicked.connect(self.archive_file)
         self.keyboard_active.clicked.connect(self.activate_keyboard)
+        self.goto_button.clicked.connect(self.goto_index)
 
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeView.customContextMenuRequested.connect(self.context_menu)
@@ -70,6 +61,18 @@ class ShelfScreen3(QMainWindow):
 
     def deactivate_keyboard(self):
         self.keyboard_active.setStyleSheet("background-color: rgb(222, 222, 222); border-radius: 10px;")
+
+    def goto_index(self):
+        text, ok = QInputDialog.getText(self, 'Go to Index', 'Enter file index')
+
+        if ok:
+            if int(text) > len(self.file_list):
+                self.show_popup("Warning", "Invalid index", "warning")
+            elif int(text) <= 0:
+                self.show_popup("Warning", "Invalid index", "warning")
+            else:
+                self.index = int(text) - 1
+                self.display_labels(self.path + "/" + self.file_list[self.index])
 
     def loadLabels(self):
         text, ok = QInputDialog.getText(self, 'Load Labels', 'Label filepath')
@@ -94,6 +97,7 @@ class ShelfScreen3(QMainWindow):
 
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
+        self.title_count.setText(f"     {self.model.fileName(index)}")
 
         if file_path[-4:] == ".jpg" or file_path[-4:] == ".png":
             self.display_labels(file_path)
@@ -104,7 +108,6 @@ class ShelfScreen3(QMainWindow):
         self.kb_active = True
         self.activate_keyboard()
         if event.key() == QtCore.Qt.Key_B:
-            print(" Pressed B")
             self.index -= 1
 
             if self.index < 0:
@@ -115,10 +118,9 @@ class ShelfScreen3(QMainWindow):
             self.root_dir.setText(dst)
 
         elif event.key() == QtCore.Qt.Key_N:
-            print(" Pressed N")
             self.index += 1
 
-            if self.index > len(self.file_list):
+            if self.index >= len(self.file_list):
                 self.index -= 1
 
             dst = self.path + f"/{self.file_list[self.index]}"
@@ -132,15 +134,25 @@ class ShelfScreen3(QMainWindow):
         self.action_window.resize(self.width() - 430, self.height() - 250)
         self.picBox.resize(self.width() - 450, self.height() - 270)
         self.treeView.resize(350, self.height() - 250)
-        self.keyboard_active.move(self.width() - 500, self.height() - 320)
+        self.keyboard_active.move(self.width() - 500, self.height() - 360)
+        self.goto_button.move(20, self.height() - 360)
+        self.title_count.resize(self.width() - 450, 40)
+        self.title_count.move(10, self.height() - 300)
 
     def context_menu(self):
         menu = QtWidgets.QMenu()
         open = menu.addAction("Open")
         rename = menu.addAction("Rename")
+        properties = menu.addAction("Properties")
+        menu.addSeparator()
         archive = menu.addAction("Archive")
         delete = menu.addAction("Delete")
-        properties = menu.addAction("Properties")
+
+        open.setIcon(QtGui.QIcon('gui/icons/open.svg'))
+        rename.setIcon(QtGui.QIcon('gui/icons/rename.svg'))
+        properties.setIcon(QtGui.QIcon('gui/icons/info-solid.svg'))
+        archive.setIcon(QtGui.QIcon('gui/icons/box-archive-solid.svg'))
+        delete.setIcon(QtGui.QIcon('gui/icons/trash-solid.svg'))
 
         open.triggered.connect(self.open_file)
         rename.triggered.connect(self.rename_file)
@@ -156,7 +168,8 @@ class ShelfScreen3(QMainWindow):
         self.deactivate_keyboard()
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
-        file_name = os.path.basename(file_path)
+        file_name = self.model.fileName(index)
+        self.title_count.setText(f"     {file_name}")
 
         if os.path.isdir(file_path):
             self.path = file_path
@@ -264,9 +277,11 @@ class ShelfScreen3(QMainWindow):
         diag.exec()
 
     def display_labels(self, filepath):
+        label_error = ""
+        if self.kb_active:
+            self.title_count.setText(f"     Count: {self.index + 1}/{len(self.file_list)} {self.file_list[self.index]}")
 
         if os.path.exists(filepath[:-4]+".txt"):
-
             label_file = open(filepath[:-4]+".txt", 'r')
             lines = label_file.readlines()
             label_file.close()
@@ -283,7 +298,6 @@ class ShelfScreen3(QMainWindow):
                 scale = 3
 
             for line in lines:
-                print(line)
                 # Split string to float
                 class_name, nx, ny, nw, nh = map(str, line.split(' '))
                 nx, ny, nw, nh = map(float, [nx, ny, nw, nh])
@@ -295,19 +309,28 @@ class ShelfScreen3(QMainWindow):
 
                 if l < 0:
                     l = 0
+                    label_error += "L "
                 if r > dw - 1:
                     r = dw - 1
+                    label_error += "R "
                 if t < 0:
                     t = 0
+                    label_error += "T "
                 if b > dh - 1:
                     b = dh - 1
+                    label_error += "B "
 
                 if len(self.labels) > 0:
                     if len(class_name) > 3:
                         for key, value in self.labels.items():
                             if class_name == value[0]:
-                                cv2.putText(img, self.labels[key][0], (l + 5, t + 20*scale),
+                                cv2.putText(img, f"{self.labels[key][0]}", (l + 5, t + 20*scale),
                                             cv2.FONT_HERSHEY_SIMPLEX, scale, self.labels[key][1], scale+2, cv2.LINE_AA, False)
+                                if label_error != "":
+                                    cv2.putText(img, f"label error {label_error}", (l + 5, t + 40 * scale),
+                                                cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 255), scale + 2,
+                                                cv2.LINE_AA, False)
+
                                 cv2.rectangle(img, (l, t), (r, b), self.labels[key][1], 3)
                                 break
                             else:
@@ -372,9 +395,6 @@ class ShelfScreen3(QMainWindow):
             # dirs = dir_obj[1]
             self.file_list = [file for file in dir_obj[2] if not file.endswith(('.txt', '.tar'))]
             # self.file_list = dir_obj[2]
-
-
-
 
 class Properties(QDialog):
     def __init__(self, fileName="Default", dir="d"):
