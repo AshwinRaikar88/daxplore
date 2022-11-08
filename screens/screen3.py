@@ -5,7 +5,7 @@ import cv2
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QMessageBox, QInputDialog, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QMainWindow, QMessageBox, QInputDialog
 
 
 class ShelfScreen3(QMainWindow):
@@ -44,11 +44,15 @@ class ShelfScreen3(QMainWindow):
         icon5 = QtGui.QIcon('gui/icons/box-archive-solid.svg')
         self.archive_labels.setIcon(icon5)
 
+        icon6 = QtGui.QIcon('gui/icons/keyboard-solid.svg')
+        self.keyboard_active.setIcon(icon6)
+
         self.shelf.clicked.connect(self.gotoShelf1)
         self.shelf_2.clicked.connect(self.gotoShelf2)
 
         self.load_labels.clicked.connect(self.loadLabels)
         self.archive_labels.clicked.connect(self.archive_file)
+        self.keyboard_active.clicked.connect(self.activate_keyboard)
 
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeView.customContextMenuRequested.connect(self.context_menu)
@@ -60,6 +64,12 @@ class ShelfScreen3(QMainWindow):
         self.populate(self.path)
 
         self.exp_back.clicked.connect(self.goBack)
+
+    def activate_keyboard(self):
+        self.keyboard_active.setStyleSheet("background-color: rgb(0, 255, 0); border-radius: 10px;")
+
+    def deactivate_keyboard(self):
+        self.keyboard_active.setStyleSheet("background-color: rgb(222, 222, 222); border-radius: 10px;")
 
     def loadLabels(self):
         text, ok = QInputDialog.getText(self, 'Load Labels', 'Label filepath')
@@ -80,6 +90,7 @@ class ShelfScreen3(QMainWindow):
 
     def select_item(self):
         self.kb_active = False
+        self.deactivate_keyboard()
 
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
@@ -91,7 +102,7 @@ class ShelfScreen3(QMainWindow):
 
     def keyPressEvent(self, event):
         self.kb_active = True
-        # TODO: Pop out archived filenames from self.file_path
+        self.activate_keyboard()
         if event.key() == QtCore.Qt.Key_B:
             print(" Pressed B")
             self.index -= 1
@@ -121,6 +132,7 @@ class ShelfScreen3(QMainWindow):
         self.action_window.resize(self.width() - 430, self.height() - 250)
         self.picBox.resize(self.width() - 450, self.height() - 270)
         self.treeView.resize(350, self.height() - 250)
+        self.keyboard_active.move(self.width() - 500, self.height() - 320)
 
     def context_menu(self):
         menu = QtWidgets.QMenu()
@@ -141,6 +153,7 @@ class ShelfScreen3(QMainWindow):
 
     def open_file(self):
         self.kb_active = False
+        self.deactivate_keyboard()
         index = self.treeView.currentIndex()
         file_path = self.model.filePath(index)
         file_name = os.path.basename(file_path)
@@ -150,7 +163,6 @@ class ShelfScreen3(QMainWindow):
             self.root_dir.setText(self.path)
             self.populate(file_path)
             self.parse_files()
-            diag = Properties(file_name, 'd')
 
         elif file_path[-4:] == ".jpg" or file_path[-4:] == ".png":
             self.display_labels(file_path)
@@ -160,7 +172,6 @@ class ShelfScreen3(QMainWindow):
 
         elif os.path.exists(file_path) and os.path.exists(file_path[-4:]+".txt"):
             self.display_labels(file_path)
-
 
         print(f'clicked: {file_path}')
 
@@ -195,16 +206,20 @@ class ShelfScreen3(QMainWindow):
                 os.mkdir(dst)
 
             shutil.move(file_path, dst)
+            if self.kb_active:
+                self.file_list.pop(self.index)
+                self.index -= 1
+
             # Move labels if found
             if os.path.exists(file_path[:-4]+".txt"):
                 shutil.move(file_path[:-4]+".txt", dst)
-                # self.file_list.pop(self.index)
 
             image_qt = QImage("gui/images/archived-rubber-stamp.jpg")
 
+            # To scale image for example and keep its Aspect Ratio
             image_qt = image_qt.scaled(self.picBox.width(), self.picBox.height(),
                                        aspectRatioMode=QtCore.Qt.KeepAspectRatio,
-                                       transformMode=QtCore.Qt.SmoothTransformation)  # To scale image for example and keep its Aspect Ration
+                                       transformMode=QtCore.Qt.SmoothTransformation)
             self.picBox.setPixmap(QPixmap.fromImage(image_qt))
 
         print(f'Archived: {dst}')
@@ -317,7 +332,7 @@ class ShelfScreen3(QMainWindow):
             image_qt = QImage(filepath)
 
         image_qt = image_qt.scaled(self.picBox.width(), self.picBox.height(), aspectRatioMode=QtCore.Qt.KeepAspectRatio,
-                                             transformMode=QtCore.Qt.SmoothTransformation)  # To scale image for example and keep its Aspect Ration
+                                             transformMode=QtCore.Qt.SmoothTransformation)  # To scale image for example and keep its Aspect Ratio
         self.picBox.setPixmap(QPixmap.fromImage(image_qt))
 
     def show_popup(self, title, info, type):

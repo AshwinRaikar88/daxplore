@@ -31,9 +31,19 @@ def dir_parser(src, ext="txt"):
         root = dir_obj[0]
         dirs = dir_obj[1]
         files = [file for file in dir_obj[2] if not file.endswith(('.txt', '.tar'))]
+
+
+
         print(root)
         print(dirs)
-        print(files)
+        print(files[:10])
+
+        index = 5
+
+        out = files.pop(5)
+
+        print(files[:10])
+        print(out)
 
 
 def shuffler(src, dst):
