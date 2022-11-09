@@ -1,5 +1,7 @@
 import os
 import shutil
+import subprocess
+
 import cv2
 
 from PyQt5.QtGui import QPixmap, QImage
@@ -33,6 +35,7 @@ class ShelfScreen3(QMainWindow):
         self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
         self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
         self.load_labels.setIcon(QtGui.QIcon('gui/icons/file-solid.svg'))
+        self.label_file.setIcon(QtGui.QIcon('gui/icons/open.svg'))
         self.archive_labels.setIcon(QtGui.QIcon('gui/icons/box-archive-solid.svg'))
         self.keyboard_active.setIcon(QtGui.QIcon('gui/icons/keyboard-solid.svg'))
         self.goto_button.setIcon(QtGui.QIcon('gui/icons/goto.svg'))
@@ -44,6 +47,7 @@ class ShelfScreen3(QMainWindow):
         self.archive_labels.clicked.connect(self.archive_file)
         self.keyboard_active.clicked.connect(self.activate_keyboard)
         self.goto_button.clicked.connect(self.goto_index)
+        self.label_file.clicked.connect(self.open_label)
 
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeView.customContextMenuRequested.connect(self.context_menu)
@@ -61,6 +65,13 @@ class ShelfScreen3(QMainWindow):
 
     def deactivate_keyboard(self):
         self.keyboard_active.setStyleSheet("background-color: rgb(222, 222, 222); border-radius: 10px;")
+
+    def open_label(self):
+        dst = self.path + f"/{self.file_list[self.index][:-4]}.txt"
+        if os.path.exists(dst):
+            subprocess.Popen(rf"notepad.exe {dst}")
+        else:
+            self.show_popup("Open Labels", "Label file does not exist", "warning")
 
     def goto_index(self):
         text, ok = QInputDialog.getText(self, 'Go to Index', 'Enter file index')
