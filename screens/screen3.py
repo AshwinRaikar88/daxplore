@@ -16,6 +16,10 @@ class ShelfScreen3(QMainWindow):
 
     def __init__(self):
         super(ShelfScreen3, self).__init__()
+
+        self.dragPos = QtCore.QPoint()
+        self.isMax = False
+
         loadUi("gui/shelf_3.ui", self)
 
         if not os.path.exists(f"archive"):
@@ -39,6 +43,22 @@ class ShelfScreen3(QMainWindow):
         self.archive_labels.setIcon(QtGui.QIcon('gui/icons/box-archive-solid.svg'))
         self.keyboard_active.setIcon(QtGui.QIcon('gui/icons/keyboard-solid.svg'))
         self.goto_button.setIcon(QtGui.QIcon('gui/icons/goto.svg'))
+
+        self.close_btn.setIcon(QtGui.QIcon('gui/icons/x-mark.svg'))
+        self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/maximize.svg'))
+        self.minimize_btn.setIcon(QtGui.QIcon('gui/icons/minimize.svg'))
+
+        self.close_btn.setStyleSheet("QPushButton::hover"
+                                     "{background-color : red; border-radius: 10px;}")
+        self.maximize_btn.setStyleSheet("QPushButton::hover"
+                                        "{background-color : green; border-radius: 5px;}")
+        self.minimize_btn.setStyleSheet("QPushButton::hover"
+                                        "{background-color : orange; border-radius: 5px;}")
+
+        # self.treeView.doubleClicked.connect(self.open_file)
+        self.close_btn.clicked.connect(self.app_window_controls)
+        self.maximize_btn.clicked.connect(self.app_window_controls)
+        self.minimize_btn.clicked.connect(self.app_window_controls)
 
         self.shelf.clicked.connect(self.gotoShelf1)
         self.shelf_2.clicked.connect(self.gotoShelf2)
@@ -145,10 +165,17 @@ class ShelfScreen3(QMainWindow):
         self.action_window.resize(self.width() - 430, self.height() - 250)
         self.picBox.resize(self.width() - 450, self.height() - 270)
         self.treeView.resize(350, self.height() - 250)
+        self.title_bar.resize(self.width(), 40)
+        self.close_btn.move(self.width() - 30, 10)
+        self.maximize_btn.move(self.width() - 60, 10)
+        self.minimize_btn.move(self.width() - 90, 10)
+
         self.keyboard_active.move(self.width() - 500, self.height() - 360)
         self.goto_button.move(20, self.height() - 360)
         self.title_count.resize(self.width() - 450, 40)
         self.title_count.move(10, self.height() - 300)
+
+
 
     def context_menu(self):
         menu = QtWidgets.QMenu()
@@ -289,11 +316,15 @@ class ShelfScreen3(QMainWindow):
 
     def display_labels(self, filepath):
         label_error = ""
+        lbl_path = os.path.abspath(filepath + "/../../../") + "/labels/" + os.path.basename(os.path.abspath(filepath + "/../")) + "/" + f"{os.path.basename(filepath)[:-4]}.txt"
+        if not os.path.exists(lbl_path):
+            lbl_path = filepath[:-4]+".txt"
+
         if self.kb_active:
             self.title_count.setText(f"     Count: {self.index + 1}/{len(self.file_list)} {self.file_list[self.index]}")
 
-        if os.path.exists(filepath[:-4]+".txt"):
-            label_file = open(filepath[:-4]+".txt", 'r')
+        if os.path.exists(lbl_path):
+            label_file = open(lbl_path, 'r')
             lines = label_file.readlines()
             label_file.close()
 
@@ -406,6 +437,30 @@ class ShelfScreen3(QMainWindow):
             # dirs = dir_obj[1]
             self.file_list = [file for file in dir_obj[2] if not file.endswith(('.txt', '.tar'))]
             # self.file_list = dir_obj[2]
+
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPos()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == QtCore.Qt.LeftButton and self.title_bar.underMouse():
+            self.widget.move(self.widget.pos() + event.globalPos() - self.dragPos)
+            self.dragPos = event.globalPos()
+            event.accept()
+
+    def app_window_controls(self):
+        if self.maximize_btn.underMouse():
+            if self.isMax:
+                self.widget.showNormal()
+                self.isMax = False
+                self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/maximize.svg'))
+            else:
+                self.widget.showFullScreen()
+                self.isMax = True
+                self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/normal.svg'))
+        elif self.minimize_btn.underMouse():
+            self.widget.showMinimized()
+        elif self.close_btn.underMouse():
+            self.widget.close()
 
 class Properties(QDialog):
     def __init__(self, fileName="Default", dir="d"):
