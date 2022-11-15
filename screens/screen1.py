@@ -4,12 +4,20 @@ import shutil
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QMessageBox, QInputDialog, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QMainWindow, QMessageBox, QInputDialog, QSizePolicy, \
+    QGraphicsDropShadowEffect
 
 
 class MainScreen(QMainWindow):
     def __init__(self):
         super(MainScreen, self).__init__()
+        shadow = QGraphicsDropShadowEffect()
+
+        # setting blur radius
+        shadow.setBlurRadius(15)
+
+        # adding shadow to the label
+        self.setGraphicsEffect(shadow)
 
         self.dragPos = QtCore.QPoint()
         self.isMax = False

@@ -6,11 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>652</height>
+    <width>882</width>
+    <height>855</height>
    </rect>
   </property>
   <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>620</height>
+   </size>
+  </property>
+  <property name="baseSize">
    <size>
     <width>800</width>
     <height>620</height>
@@ -48,9 +54,14 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(52, 52, 52);
-border-bottom-left-radius: 20px;
-border-bottom-right-radius: 20px;</string>
+     <string notr="true">QWidget#widget_2{
+	background-color: rgb(52, 52, 52);
+	border: 1px solid  ;
+	border-color: rgb(52, 52, 52)  rgb(0, 170, 255)  rgb(0, 170, 255) rgb(0, 170, 255);
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+}
+</string>
     </property>
     <widget class="QWidget" name="action_window" native="true">
      <property name="geometry">
@@ -223,9 +234,14 @@ border-radius: 10px;
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-border-top-left-radius: 12px;
-border-top-right-radius: 12px;</string>
+     <string notr="true">QWidget#widget_1{
+	background-color: rgb(255, 255, 255);
+	border: 1px solid  ;
+	border-color: white rgb(0, 170, 255) rgb(52, 52, 52) rgb(0, 170, 255);
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+</string>
     </property>
     <widget class="QPushButton" name="shelf">
      <property name="geometry">
@@ -237,7 +253,10 @@ border-top-right-radius: 12px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(85, 170, 255);
+      <string notr="true">border: 2px solid  ;
+border-color: rgb(52, 52, 52);
+background-color: rgb(85, 170, 255);
+
 border-radius: 10px;
 </string>
      </property>
@@ -264,7 +283,9 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(222, 222, 222);
+      <string notr="true">border: 2px solid  ;
+border-color: rgb(200, 200, 200);
+background-color: rgb(222, 222, 222);
 border-radius: 10px;
 </string>
      </property>
@@ -291,7 +312,9 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(222, 222, 222);
+      <string notr="true">border: 2px solid  ;
+border-color: rgb(200, 200, 200);
+background-color: rgb(222, 222, 222);
 border-radius: 10px;
 </string>
      </property>
@@ -318,9 +341,14 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(222, 222, 222);
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;</string>
+      <string notr="true">QWidget#title_bar{
+	background-color: rgb(222, 222, 222);
+	border: 1px solid  ;
+	border-color: rgb(0, 170, 255) rgb(0, 170, 255)  rgb(150, 150, 150) rgb(0, 170, 255);
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+</string>
      </property>
      <widget class="QPushButton" name="close_btn">
       <property name="geometry">
@@ -447,8 +475,9 @@ border-radius: 10px;</string>
      </widget>
     </widget>
    </widget>
+   <zorder>widget_1</zorder>
+   <zorder>widget_2</zorder>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
