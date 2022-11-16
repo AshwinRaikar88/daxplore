@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>620</height>
+    <width>880</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -58,9 +58,9 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>100</y>
+       <y>90</y>
        <width>370</width>
-       <height>391</height>
+       <height>390</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -331,6 +331,25 @@ border-radius:10px;</string>
       <string/>
      </property>
     </widget>
+    <widget class="QWidget" name="tree_background" native="true">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>90</y>
+       <width>350</width>
+       <height>390</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(255, 255, 255);
+border-radius: 10px;</string>
+     </property>
+    </widget>
+    <zorder>tree_background</zorder>
+    <zorder>action_window</zorder>
+    <zorder>treeView</zorder>
+    <zorder>exp_back</zorder>
+    <zorder>root_dir</zorder>
    </widget>
    <widget class="QWidget" name="widget_1" native="true">
     <property name="geometry">
@@ -366,40 +385,19 @@ border-radius:10px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 2px solid  ;
+      <string notr="true">QPushButton#shelf{
+border: 2px solid  ;
 border-color: rgb(200, 200, 200);
 background-color: rgb(222, 222, 222);
 border-radius: 10px;
-</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="shelf_2">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>50</y>
-       <width>50</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 2px solid  ;
+}
+
+QPushButton#shelf::hover{
+border: 3px solid  ;
 border-color: rgb(200, 200, 200);
-background-color: rgb(222, 222, 222);
+background-color: rgb(85, 170, 255);
 border-radius: 10px;
-</string>
+}</string>
      </property>
      <property name="text">
       <string/>
@@ -424,10 +422,55 @@ border-radius: 10px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 2px solid  ;
+      <string notr="true">QPushButton#shelf_3{
+border: 2px solid  ;
 border-radius: 10px;
 border-color: rgb(52, 52, 52);
-background-color: rgb(255, 170, 0);</string>
+background-color: rgb(255, 170, 0);}
+
+QPushButton#shelf_3::hover{
+border: 3px solid  ;
+border-color: rgb(52, 52, 52);
+background-color: rgb(255, 170, 0);
+border-radius: 10px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="shelf_2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>50</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#shelf_2{
+border: 2px solid  ;
+border-color: rgb(200, 200, 200);
+background-color: rgb(222, 222, 222);
+border-radius: 10px;
+}
+
+QPushButton#shelf_2::hover{
+border: 3px solid  ;
+border-color: rgb(200, 200, 200);
+background-color: rgba(0, 255, 0, 0.5);
+border-radius: 10px;
+}</string>
      </property>
      <property name="text">
       <string/>
@@ -458,7 +501,8 @@ background-color: rgb(255, 170, 0);</string>
 	border-color: rgb(0, 170, 255) rgb(0, 170, 255)  rgb(150, 150, 150) rgb(0, 170, 255);
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-}</string>
+}
+</string>
      </property>
      <widget class="QPushButton" name="close_btn">
       <property name="geometry">
@@ -470,8 +514,9 @@ background-color: rgb(255, 170, 0);</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 10px;</string>
+       <string notr="true">QPushButton#close_btn::hover{
+background-color : red; border-radius: 10px;
+}</string>
       </property>
       <property name="text">
        <string/>
@@ -523,8 +568,10 @@ color: rgb(100, 100, 100);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 10px;</string>
+       <string notr="true">QPushButton#maximize_btn::hover{
+background-color : green;
+border-radius: 5px;
+}</string>
       </property>
       <property name="text">
        <string/>
@@ -558,8 +605,10 @@ border-radius: 10px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 10px;</string>
+       <string notr="true">QPushButton#minimize_btn::hover{
+background-color : orange;
+border-radius: 5px;
+}</string>
       </property>
       <property name="text">
        <string/>

@@ -1,17 +1,14 @@
 import os
 import shutil
 import subprocess
-from showinfm import show_in_file_manager
-
-
 import cv2
-from PyQt5.QtCore import Qt
 
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QDialog, QMainWindow, QMessageBox, QInputDialog, QApplication
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QInputDialog
 
+from screens.properties import Properties
 
 class ShelfScreen3(QMainWindow):
     def getWidget(self, widget):
@@ -36,8 +33,6 @@ class ShelfScreen3(QMainWindow):
         self.index = 0
         self.kb_active = False
 
-        self.root_dir.setText(self.path)
-
         self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.svg'))
         self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
         self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
@@ -51,12 +46,7 @@ class ShelfScreen3(QMainWindow):
         self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/maximize.svg'))
         self.minimize_btn.setIcon(QtGui.QIcon('gui/icons/minimize.svg'))
 
-        self.close_btn.setStyleSheet("QPushButton::hover"
-                                     "{background-color : red; border-radius: 10px;}")
-        self.maximize_btn.setStyleSheet("QPushButton::hover"
-                                        "{background-color : green; border-radius: 5px;}")
-        self.minimize_btn.setStyleSheet("QPushButton::hover"
-                                        "{background-color : orange; border-radius: 5px;}")
+        self.root_dir.setText(self.path)
 
         # self.treeView.doubleClicked.connect(self.open_file)
         self.close_btn.clicked.connect(self.app_window_controls)
@@ -165,9 +155,10 @@ class ShelfScreen3(QMainWindow):
         self.widget_1.resize(self.width(), 120)
         self.widget_2.resize(self.width(), self.height())
         self.root_dir.resize(self.width()-130, 50)
-        self.action_window.resize(self.width() - 430, self.height() - 250)
-        self.picBox.resize(self.width() - 450, self.height() - 270)
+        self.action_window.resize(self.width() - 430, self.height() - 230)
         self.treeView.resize(350, self.height() - 250)
+        self.tree_background.resize(350, self.height() - 230)
+        self.picBox.resize(self.width() - 450, self.height() - 270)
         self.title_bar.resize(self.width(), 40)
         self.close_btn.move(self.width() - 30, 10)
         self.maximize_btn.move(self.width() - 60, 10)
@@ -177,8 +168,6 @@ class ShelfScreen3(QMainWindow):
         self.goto_button.move(20, self.height() - 360)
         self.title_count.resize(self.width() - 450, 40)
         self.title_count.move(10, self.height() - 300)
-
-
 
     def context_menu(self):
         menu = QtWidgets.QMenu()
@@ -466,73 +455,3 @@ class ShelfScreen3(QMainWindow):
             self.widget.showMinimized()
         elif self.close_btn.underMouse():
             self.widget.close()
-
-class Properties(QDialog):
-    def __init__(self, fileName="Default", filePath="", dir="d"):
-        super(QDialog, self).__init__()
-        loadUi("gui/properties.ui", self)
-
-        self.dir_type = dir
-        self.filepath.setText(filePath)
-        self.clipboard = QApplication.clipboard()
-
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowIcon(QtGui.QIcon('gui/icons/ghost-solid.svg'))
-
-
-
-        self.filename.setText(fileName)
-        self.copy.setIcon(QtGui.QIcon('gui/icons/normal.svg'))
-        self.open_exp.setIcon(QtGui.QIcon('gui/icons/goto.svg'))
-
-
-        if dir == "d":
-            self.shelf.setIcon(QtGui.QIcon('gui/icons/file_icons/folder.svg'))
-            self.shelf.setStyleSheet("background-color : rgb(248, 222, 126); border-radius: 10px;")
-        elif dir == "e":
-            self.shelf.setIcon(QtGui.QIcon('gui/icons/file_icons/image-solid.svg'))
-            self.shelf.setStyleSheet("background-color : rgb(255, 54, 94); border-radius: 10px;")
-        elif dir == "t":
-            self.shelf.setIcon(QtGui.QIcon('gui/icons/file_icons/txt_file.svg'))
-            self.shelf.setStyleSheet("background-color : rgb(245, 245, 245); border-radius: 10px;")
-        elif dir == "f":
-            self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.png'))
-            self.shelf.setStyleSheet("background-color : rgb(241, 213, 146); border-radius: 10px;")
-
-        self.close_btn.setIcon(QtGui.QIcon('gui/icons/x-mark.svg'))
-        self.close_btn.setStyleSheet("QPushButton::hover"
-                                     "{background-color : red; border-radius: 10px;}")
-
-        self.copy.clicked.connect(self.copy_to_clipboard)
-        self.open_exp.clicked.connect(self.open_in_explorer)
-        self.close_btn.clicked.connect(self.close)
-
-    def open_in_explorer(self):
-        if self.dir_type != "d":
-            show_in_file_manager(os.path.abspath(self.filepath.text()+"/../"))
-        else:
-            show_in_file_manager(self.filepath.text())
-    def copy_to_clipboard(self):
-        self.clipboard.setText(self.filepath.text())
-        self.show_popup("Daxplore", f"Path copied to clipboard", "info")
-
-    def show_popup(self, title, info, type):
-        msg = QMessageBox()
-        msg.setWindowTitle(title)
-        msg.setText(info)
-        msg.setDefaultButton(QMessageBox.Ok)
-        if type == "warning":
-            # Question, Information, Warning
-            msg.setIcon(QMessageBox.Warning)
-        elif type == "info":
-            msg.setIcon(QMessageBox.Information)
-        x = msg.exec_()
-    def mousePressEvent(self, event):
-        self.dragPos = event.globalPos()
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == QtCore.Qt.LeftButton and self.title_bar.underMouse():
-            self.move(self.pos() + event.globalPos() - self.dragPos)
-            self.dragPos = event.globalPos()
-            event.accept()

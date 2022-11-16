@@ -19,11 +19,9 @@ class MainScreen(QMainWindow):
         self.path = os.getcwd().replace('\\', '/')
         self.root_dir.setText(self.path)
 
-
         self.shelf.setIcon(QtGui.QIcon('gui/icons/ghost-solid.png'))
         self.shelf_2.setIcon(QtGui.QIcon('gui/icons/hat-wizard-solid.svg'))
         self.shelf_3.setIcon(QtGui.QIcon('gui/icons/dungeon-solid.svg'))
-
 
         self.shelf_2.clicked.connect(self.gotoShelf2)
         self.shelf_3.clicked.connect(self.gotoShelf3)
@@ -31,13 +29,6 @@ class MainScreen(QMainWindow):
         self.close_btn.setIcon(QtGui.QIcon('gui/icons/x-mark.svg'))
         self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/maximize.svg'))
         self.minimize_btn.setIcon(QtGui.QIcon('gui/icons/minimize.svg'))
-
-        self.close_btn.setStyleSheet("QPushButton::hover"
-                             "{background-color : red; border-radius: 10px;}")
-        self.maximize_btn.setStyleSheet("QPushButton::hover"
-                                     "{background-color : green; border-radius: 5px;}")
-        self.minimize_btn.setStyleSheet("QPushButton::hover"
-                                     "{background-color : orange; border-radius: 5px;}")
 
         # self.treeView.doubleClicked.connect(self.open_file)
         self.close_btn.clicked.connect(self.app_window_controls)
@@ -82,8 +73,9 @@ class MainScreen(QMainWindow):
         self.widget_1.resize(self.width(), 120)
         self.widget_2.resize(self.width(), self.height())
         self.root_dir.resize(self.width()-130, 50)
-        self.action_window.resize(self.width() - 430, self.height() - 250)
+        self.action_window.resize(self.width() - 430, self.height() - 230)
         self.treeView.resize(350, self.height() - 250)
+        self.tree_background.resize(350, self.height() - 230)
         self.title_bar.resize(self.width(), 40)
         self.close_btn.move(self.width()-30, 10)
         self.maximize_btn.move(self.width() - 60, 10)

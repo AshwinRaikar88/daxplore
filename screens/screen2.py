@@ -60,12 +60,6 @@ class ShelfScreen2(QMainWindow):
         self.maximize_btn.setIcon(QtGui.QIcon('gui/icons/maximize.svg'))
         self.minimize_btn.setIcon(QtGui.QIcon('gui/icons/minimize.svg'))
 
-        self.close_btn.setStyleSheet("QPushButton::hover"
-                                     "{background-color : red; border-radius: 10px;}")
-        self.maximize_btn.setStyleSheet("QPushButton::hover"
-                                        "{background-color : green; border-radius: 5px;}")
-        self.minimize_btn.setStyleSheet("QPushButton::hover"
-                                        "{background-color : orange; border-radius: 5px;}")
 
         # self.treeView.doubleClicked.connect(self.open_file)
         self.close_btn.clicked.connect(self.app_window_controls)
@@ -207,8 +201,9 @@ class ShelfScreen2(QMainWindow):
         self.widget_1.resize(self.width(), 120)
         self.widget_2.resize(self.width(), self.height())
         self.root_dir.resize(self.width()-130, 50)
-        self.action_window.resize(self.width() - 430, self.height() - 250)
+        self.action_window.resize(self.width() - 430, self.height() - 230)
         self.treeView.resize(350, self.height() - 250)
+        self.tree_background.resize(350, self.height() - 230)
         self.title_bar.resize(self.width(), 40)
         self.close_btn.move(self.width() - 30, 10)
         self.maximize_btn.move(self.width() - 60, 10)
