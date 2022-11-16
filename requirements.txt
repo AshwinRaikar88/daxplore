@@ -1,0 +1,4 @@
+opencv-python
+pyqt5
+pyqt5-tools
+show-in-file-manager

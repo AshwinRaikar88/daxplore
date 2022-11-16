@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
-    <height>425</height>
+    <width>627</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,23 +29,104 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
+    <string notr="true">QWidget#widget_1{
+	background-color: rgb(255, 255, 255);
+	border: 1px solid  ;
+	border-color: white rgb(0, 170, 255) rgb(52, 52, 52) rgb(0, 170, 255);
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+</string>
    </property>
-   <widget class="QLabel" name="title">
+   <widget class="QLabel" name="filename">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
-      <width>181</width>
+      <x>20</x>
+      <y>60</y>
+      <width>461</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 16pt &quot;Cascadia Code PL SemiBold&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>File Name</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="title_bar" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>500</width>
       <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 63 16pt &quot;Cascadia Code PL SemiBold&quot;;</string>
+     <string notr="true">QWidget#title_bar{
+	background-color: rgb(222, 222, 222);
+	border: 1px solid  ;
+	border-color: rgb(0, 170, 255) rgb(0, 170, 255)  rgb(150, 150, 150) rgb(0, 170, 255);
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+</string>
     </property>
-    <property name="text">
-     <string>Properties</string>
-    </property>
+    <widget class="QPushButton" name="close_btn">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>10</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="title_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>5</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 63 14pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(100, 100, 100);
+background-color: rgb(222, 222, 222);</string>
+     </property>
+     <property name="text">
+      <string>Properties</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QWidget" name="widget_2" native="true">
@@ -58,15 +139,22 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(50, 50, 50);</string>
+    <string notr="true">QWidget#widget_2{
+	background-color: rgb(52, 52, 52);
+	border: 1px solid  ;
+	border-color: rgb(52, 52, 52)  rgb(0, 170, 255)  rgb(0, 170, 255) rgb(0, 170, 255);
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+}
+</string>
    </property>
    <widget class="QPushButton" name="shelf">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>200</width>
-      <height>200</height>
+      <width>100</width>
+      <height>100</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -79,75 +167,94 @@ border-radius: 10px;
     </property>
     <property name="iconSize">
      <size>
-      <width>20</width>
-      <height>20</height>
+      <width>40</width>
+      <height>40</height>
      </size>
     </property>
     <property name="checkable">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="shelf_2">
+   <widget class="QPushButton" name="open_exp">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
-      <width>50</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:rgb(222, 222, 222);
-border-radius: 10px;
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>20</width>
-      <height>20</height>
-     </size>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="shelf_3">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>220</y>
-      <width>50</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(222, 222, 222);
-border-radius: 10px;
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>20</width>
-      <height>20</height>
-     </size>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="filename">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>10</y>
-      <width>181</width>
+      <y>120</y>
+      <width>41</width>
       <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#open_exp{
+border: 2px solid  ;
+border-color: rgb(152, 152, 152);
+background-color: rgb(222, 222, 222);
+border-radius: 10px;
+}
+
+QPushButton#open_exp::hover{
+border: 2px solid  ;
+border-color: rgb(152, 152, 152);
+background-color: rgb(248, 222, 126);
+border-radius: 10px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="filepath_label">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>20</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>360</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 12pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);
+word-wrap: break-word;</string>
+    </property>
+    <property name="text">
+     <string>Filepath:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="size">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>120</y>
+      <width>141</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -155,7 +262,80 @@ border-radius: 10px;
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Filename</string>
+     <string>Size:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="filepath">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>20</y>
+      <width>261</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>360</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 12pt &quot;Cascadia Code PL SemiBold&quot;;
+color: rgb(255, 255, 255);
+word-wrap: break-word;</string>
+    </property>
+    <property name="text">
+     <string>path</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="copy">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>120</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#copy{
+border: 2px solid  ;
+border-color: rgb(152, 152, 152);
+background-color: rgb(222, 222, 222);
+border-radius: 10px;
+}
+
+QPushButton#copy::hover{
+border: 2px solid;
+border-color: rgb(150, 150, 150);
+background-color: rgb(255, 100, 100);
+border-radius: 10px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
